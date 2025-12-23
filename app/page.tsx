@@ -345,7 +345,7 @@ const HomePage: React.FC = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-200">
             📜 The Complete Menu
           </h2>
-          <p className="text-center text-gray-600 mb-12">
+          <p className="text-center text-white-600 mb-12">
             Chai, Coffee, Maggi, and all the light bites you crave!
           </p>
 
@@ -553,10 +553,7 @@ const HomePage: React.FC = () => {
               </a>
             </div>
           </div>
-          <p className="mt-10 text-sm text-gray-500">
-            (Please remember to replace the Zomato, Swiggy, Map links, and the
-            Address with your actual details.)
-          </p>
+        
         </div>
       </section>
 
