@@ -478,7 +478,7 @@ const HomePage: React.FC = () => {
             className="w-full h-full object-cover opacity-90"
           />
         </div>
-        <div className="container mx-auto px-4 max-w-6xl relative z-50">
+        <div className="container mx-auto px-4 max-w-8xl relative z-20 ">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-700 flex items-center justify-center">
             ⭐ Reviews & Feedback from Duddy! ⭐
           </h2>
@@ -510,12 +510,7 @@ const HomePage: React.FC = () => {
                   } rounded-bl-full opacity-10`}
                 ></div>
 
-                {/* Featured badge for Duddy */}
-                {/* {review.name === "Duddy The Reviewer" && (
-                  <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                    ⭐ FEATURED
-                  </div>
-                )} */}
+                
 
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Star rating with animated background */}
