@@ -479,7 +479,7 @@ const HomePage: React.FC = () => {
           />
         </div>
         <div className="container mx-auto px-4 max-w-6xl relative z-50">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-black flex items-center justify-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-700 flex items-center justify-center">
             ⭐ Reviews & Feedback from Duddy! ⭐
           </h2>
 
@@ -595,7 +595,7 @@ const HomePage: React.FC = () => {
         }}
       >
         <div className="container mx-auto px-4 text-center max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-400">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-700">
             📍 Find Us & Order Online
           </h2>
 
