@@ -109,36 +109,38 @@ const galleryImages: GalleryImage[] = [
 const menuImages = ["/images/menu_card.jpg", "/images/menu_card2.jpg"];
 
 const reviews = [
-    {
-      name: "Duddy The Reviewer",
-      rating: 5,
-      review: "This is the <strong>best cyber training</strong> I've ever experienced!",
-      date: "Dec 15, 2024"
-    },
-    {
-      name: "Sarah Johnson",
-      rating: 5,
-      review: "Excellent course content and <strong>amazing instructors</strong>!",
-      date: "Dec 10, 2024"
-    },
-    {
-      name: "Mike Chen",
-      rating: 4,
-      review: "Very comprehensive material. Worth every penny!",
-      date: "Dec 5, 2024"
-    },
-    {
-      name: "Emily Davis",
-      rating: 5,
-      review: "The hands-on labs are <strong>incredibly valuable</strong>!",
-      date: "Nov 28, 2024"
-    },
-    {
-      name: "John Smith",
-      rating: 5,
-      review: "Got certified and landed my dream job. Highly recommend!",
-      date: "Nov 20, 2024"
-    }
+  {
+    name: "Duddy The Reviewer",
+    rating: 5,
+    review:
+      "This is the <strong>best cyber training</strong> I've ever experienced!",
+    date: "Dec 15, 2024",
+  },
+  {
+    name: "Sarah Johnson",
+    rating: 5,
+    review:
+      "Excellent course content and <strong>amazing instructors</strong>!",
+    date: "Dec 10, 2024",
+  },
+  {
+    name: "Mike Chen",
+    rating: 4,
+    review: "Very comprehensive material. Worth every penny!",
+    date: "Dec 5, 2024",
+  },
+  {
+    name: "Emily Davis",
+    rating: 5,
+    review: "The hands-on labs are <strong>incredibly valuable</strong>!",
+    date: "Nov 28, 2024",
+  },
+  {
+    name: "John Smith",
+    rating: 5,
+    review: "Got certified and landed my dream job. Highly recommend!",
+    date: "Nov 20, 2024",
+  },
 ];
 
 const HomePage: React.FC = () => {
@@ -478,28 +480,21 @@ const HomePage: React.FC = () => {
             className="w-full h-full object-cover opacity-90"
           />
         </div>
-        <div className="container mx-auto px-4 max-w-8xl relative z-20 ">
+        <div className="container mx-auto px-4 max-w-6xl relative z-30">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-700 flex items-center justify-center">
             ⭐ Reviews & Feedback from Duddy! ⭐
           </h2>
 
-          <div
-            ref={scrollRef}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className="flex gap-8 overflow-x-hidden pb-4"
-            style={{ scrollBehavior: "auto" }}
-          >
-            {/* Duplicate reviews for seamless loop */}
-            {[...reviews, ...reviews].map((review, index) => (
+          <div className="flex gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+            {reviews.map((review, index) => (
               <div
                 key={index}
-                className={`flex-shrink-0 w-80 h-72 p-6 rounded-2xl shadow-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-3xl relative overflow-hidden
-                          ${
-                            review.name === "Duddy The Reviewer"
-                              ? "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
-                              : "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
-                          }`}
+                className={`flex-shrink-0 w-80 h-72 p-6 rounded-2xl shadow-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-3xl relative overflow-hidden snap-center
+                    ${
+                      review.name === "Duddy The Reviewer"
+                        ? "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
+                        : "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
+                    }`}
               >
                 {/* Decorative corner accent */}
                 <div
@@ -509,8 +504,6 @@ const HomePage: React.FC = () => {
                       : "bg-blue-400"
                   } rounded-bl-full opacity-10`}
                 ></div>
-
-                
 
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Star rating with animated background */}
@@ -556,7 +549,9 @@ const HomePage: React.FC = () => {
                   <div className="flex-1 mb-4">
                     <p
                       className="text-gray-700 leading-relaxed text-base"
-                      dangerouslySetInnerHTML={{ __html: `"${review.review}"` }}
+                      dangerouslySetInnerHTML={{
+                        __html: `&ldquo;${review.review}&rdquo;`,
+                      }}
                     />
                   </div>
 
@@ -580,6 +575,16 @@ const HomePage: React.FC = () => {
             ))}
           </div>
         </div>
+
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </section>
       {/* 6. Location and Delivery Links */}
       <section
