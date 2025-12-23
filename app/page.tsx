@@ -2,7 +2,7 @@
 "use client"; // Marks as Client Component for interactivity
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Define the type for Menu Highlights
@@ -109,33 +109,44 @@ const galleryImages: GalleryImage[] = [
 const menuImages = ["/images/menu_card.jpg", "/images/menu_card2.jpg"];
 
 const reviews = [
-  {
-    name: "Duddy The Reviewer",
-    rating: 5,
-    review:
-      "The **Signature Chai** here is a game-changer! Perfect strong flavor and served in that beautiful kettle. Paired with the Cheesy Vada Pav, it's the ultimate evening snack combo. Ambiance is chill, great spot for friends!",
-    date: "October 18, 2024",
-  },
-  {
-    name: "Local Foodie",
-    rating: 4,
-    review:
-      "Tried the **Tandoori Maggi** and it was unique and spicy! The service was quick, and the outdoor seating under the fairy lights is lovely. A must-visit for a casual coffee date.",
-    date: "November 5, 2024",
-  },
-  {
-    name: "Chai Lover",
-    rating: 5,
-    review:
-      "This place lives up to its name. Best Chai in the area, and the **Loaded Fries** were absolutely fantastic. Pricing is very reasonable for the quality and setting.",
-    date: "November 20, 2024",
-  },
+    {
+      name: "Duddy The Reviewer",
+      rating: 5,
+      review: "This is the <strong>best cyber training</strong> I've ever experienced!",
+      date: "Dec 15, 2024"
+    },
+    {
+      name: "Sarah Johnson",
+      rating: 5,
+      review: "Excellent course content and <strong>amazing instructors</strong>!",
+      date: "Dec 10, 2024"
+    },
+    {
+      name: "Mike Chen",
+      rating: 4,
+      review: "Very comprehensive material. Worth every penny!",
+      date: "Dec 5, 2024"
+    },
+    {
+      name: "Emily Davis",
+      rating: 5,
+      review: "The hands-on labs are <strong>incredibly valuable</strong>!",
+      date: "Nov 28, 2024"
+    },
+    {
+      name: "John Smith",
+      rating: 5,
+      review: "Got certified and landed my dream job. Highly recommend!",
+      date: "Nov 20, 2024"
+    }
 ];
 
 const HomePage: React.FC = () => {
   // moved state and effect inside component (hooks cannot be used at top-level)
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -146,6 +157,33 @@ const HomePage: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationFrameId: number;
+
+    const scroll = () => {
+      if (!isPaused && scrollContainer) {
+        scrollContainer.scrollLeft += 0.5; // Adjust speed here (lower = slower)
+
+        // Reset scroll when reaching the end for seamless loop
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+          scrollContainer.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [isPaused]);
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
@@ -432,62 +470,117 @@ const HomePage: React.FC = () => {
         </div>
       </section>
       <hr className="border-t-2 border-chfi-blue/20 max-w-6xl mx-auto" />
-      <section id="reviews" className="py-16 md:py-24 bg-chfi-white relative">
-        <div className="absolute inset-0 z-0">
+      <section id="reviews" className="py-16 md:py-24 bg-white relative">
+        <div className="absolute inset-0 z-1">
           <img
             src="/images/reviews_bg.jpg"
             alt="Background"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-90"
           />
         </div>
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-400 flex items-center justify-center">
+        <div className="container mx-auto px-4 max-w-6xl relative z-50">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-black flex items-center justify-center">
             ⭐ Reviews & Feedback from Duddy! ⭐
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {reviews.map((review, index) => (
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="flex gap-8 overflow-x-hidden pb-4"
+            style={{ scrollBehavior: "auto" }}
+          >
+            {/* Duplicate reviews for seamless loop */}
+            {[...reviews, ...reviews].map((review, index) => (
               <div
                 key={index}
-                className={`p-6 rounded-xl shadow-xl border-t-4 transition duration-300 transform hover:scale-[1.02] 
-                            ${
-                              review.name === "Duddy The Reviewer"
-                                ? "bg-yellow-50 border-yellow-500"
-                                : "bg-white border-chfi-blue/50"
-                            }`}
+                className={`flex-shrink-0 w-80 h-72 p-6 rounded-2xl shadow-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-3xl relative overflow-hidden
+                          ${
+                            review.name === "Duddy The Reviewer"
+                              ? "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
+                              : "bg-gradient-to-br from-white via-blue-50 to-indigo-50 border-2 border-blue-200"
+                          }`}
               >
-                <div className="flex items-center mb-3">
-                  {Array(review.rating)
-                    .fill(0)
-                    .map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-xl">
-                        ★
-                      </span>
-                    ))}
-                  <span className="ml-2 text-sm text-gray-500">
-                    ({review.rating}/5)
-                  </span>
-                </div>
-
-                <p
-                  className={`text-xl font-semibold mb-2 ${
+                {/* Decorative corner accent */}
+                <div
+                  className={`absolute top-0 right-0 w-20 h-20 ${
                     review.name === "Duddy The Reviewer"
-                      ? "text-blue-500"
-                      : "text-chfi-blue"
-                  }`}
-                >
-                  {review.name === "Duddy The Reviewer"
-                    ? "Duddy The Reviewer (Featured)"
-                    : review.name}
-                </p>
+                      ? "bg-blue-400"
+                      : "bg-blue-400"
+                  } rounded-bl-full opacity-10`}
+                ></div>
 
-                {/* Use dangerouslySetInnerHTML to render the bolded text from the review string */}
-                <p
-                  className="text-gray-700 italic mb-4"
-                  dangerouslySetInnerHTML={{ __html: review.review }}
-                />
+                {/* Featured badge for Duddy */}
+                {/* {review.name === "Duddy The Reviewer" && (
+                  <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    ⭐ FEATURED
+                  </div>
+                )} */}
 
-                <p className="text-sm text-gray-400 mt-2">{review.date}</p>
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Star rating with animated background */}
+                  <div className="flex items-center mb-4 bg-white/80 backdrop-blur-sm rounded-lg p-1 shadow-sm w-fit">
+                    {Array(review.rating)
+                      .fill(0)
+                      .map((_, i) => (
+                        <span
+                          key={i}
+                          className="text-yellow-500 text-xl drop-shadow-sm"
+                        >
+                          ★
+                        </span>
+                      ))}
+                    <span className="ml-2 text-sm font-semibold text-gray-600">
+                      {review.rating}.0
+                    </span>
+                  </div>
+
+                  {/* Name with icon */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md ${
+                        review.name === "Duddy The Reviewer"
+                          ? "bg-gradient-to-br from-yellow-500 to-orange-500"
+                          : "bg-gradient-to-br from-blue-500 to-indigo-600"
+                      }`}
+                    >
+                      {review.name.charAt(0)}
+                    </div>
+                    <p
+                      className={`text-lg font-bold ${
+                        review.name === "Duddy The Reviewer"
+                          ? "text-orange-600"
+                          : "text-blue-700"
+                      }`}
+                    >
+                      {review.name}
+                    </p>
+                  </div>
+
+                  {/* Review text with better styling */}
+                  <div className="flex-1 mb-4">
+                    <p
+                      className="text-gray-700 leading-relaxed text-base"
+                      dangerouslySetInnerHTML={{ __html: `"${review.review}"` }}
+                    />
+                  </div>
+
+                  {/* Date with icon */}
+                  <div className="flex items-center gap-2 text-sm text-gray-500 pt-3 border-t border-gray-200">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="font-medium">{review.date}</span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -553,7 +646,6 @@ const HomePage: React.FC = () => {
               </a>
             </div>
           </div>
-        
         </div>
       </section>
 
